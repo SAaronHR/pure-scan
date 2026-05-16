@@ -3,15 +3,33 @@
 import { useState } from "react"
 import { Input } from "@/components/ui/input"
 import { Button } from "./ui/button"
-import { CloudUpload, X } from "lucide-react"
+import { CloudUpload, X, TriangleAlert } from "lucide-react"
 import { Card, CardContent, CardTitle } from "./ui/card"
 
-export default function NewImg() {
+interface NewImgProps {
+    onScan?: () => void;
+    isScanning?: boolean;
+}
+
+export default function NewImg({ onScan, isScanning }: NewImgProps) {
     const [preview, setPreview] = useState<string | null>(null)
+    const [error, setError] = useState<string | null>(null)
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0]
+        setError(null)
         if (file) {
+            const validTypes = ['image/jpeg', 'image/png', 'image/webp']
+            if (!validTypes.includes(file.type)) {
+                setError("El formato del archivo no es válido. Solo se admiten JPG, PNG y WEBP.")
+                e.target.value = ''
+                return
+            }
+            if (file.size > 10 * 1024 * 1024) {
+                setError("El archivo supera el límite de 10MB.")
+                e.target.value = ''
+                return
+            }
             const url = URL.createObjectURL(file)
             setPreview(url)
         }
@@ -20,6 +38,9 @@ export default function NewImg() {
     const clearPreview = (e: React.MouseEvent) => {
         e.preventDefault()
         setPreview(null)
+        setError(null)
+        const fileInput = document.getElementById('picture') as HTMLInputElement
+        if (fileInput) fileInput.value = ''
     }
 
     return (
@@ -60,7 +81,17 @@ export default function NewImg() {
                         onChange={handleFileChange}
                     />
                 </div>
-                <Button className="w-full">ANALIZAR IMAGEN</Button>
+
+                {error && (
+                    <div className="mb-4 p-3 rounded-md bg-[#330000] border border-[#93000A] text-[#FFB4AB] text-sm flex items-start gap-2">
+                        <TriangleAlert className="w-5 h-5 shrink-0" />
+                        <p className="mt-0.5">{error}</p>
+                    </div>
+                )}
+
+                <Button className="w-full" onClick={onScan} disabled={isScanning || !preview}>
+                    {isScanning ? "ANALIZANDO..." : "ANALIZAR IMAGEN"}
+                </Button>
             </CardContent>
         </Card>
     )
