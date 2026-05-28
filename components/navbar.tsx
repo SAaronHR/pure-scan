@@ -7,7 +7,6 @@ import { usePathname } from "next/navigation";
 export function Navbar() {
     const pathname = usePathname();
 
-    // Solo mostrar la barra de navegación en las rutas principales de la app
     const showNavbarRoutes = ["/img", "/text"];
     const shouldShowNavbar = showNavbarRoutes.some(route => pathname === route || pathname.startsWith(route + "/"));
 

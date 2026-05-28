@@ -18,16 +18,10 @@ export default function LandingPage() {
                 </h2>
 
                 <p className="text-lg text-zinc-400 max-w-2xl font-mono leading-relaxed mb-6">
-                    Analiza imágenes generadas por IA, detecta correos de phishing y valida contenido malicioso con nuestra plataforma de escaneo avanzado.
+                    Analiza texto con Comprehend para recibir recomendaciones y mejoras de prompt.
                 </p>
 
                 <div className="flex flex-col sm:flex-row gap-5 w-full sm:w-auto">
-                    <Link href="/img" className="w-full sm:w-auto">
-                        <Button className="w-full h-14 px-8 text-sm font-semibold tracking-wider rounded-xl flex items-center gap-3">
-                            <ImageIcon className="w-5 h-5" />
-                            ANALIZAR IMAGEN
-                        </Button>
-                    </Link>
                     <Link href="/text" className="w-full sm:w-auto">
                         <Button variant="outline" className="w-full h-14 px-8 text-sm font-semibold tracking-wider rounded-xl flex items-center gap-3 bg-[#0a0a0a] border-zinc-800 text-zinc-300 hover:text-white hover:bg-zinc-900">
                             <FileText className="w-5 h-5" />
